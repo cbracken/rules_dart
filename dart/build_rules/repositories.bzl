@@ -14,6 +14,8 @@
 
 """Repositories for Dart."""
 
+load("@bazel_tools//tools/build_defs/repo:git.bzl", "git_repository")
+
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 
 
@@ -84,4 +86,13 @@ def dart_repositories():
       url = sdk_base_url + "dartsdk-macos-x64-release.zip",
       sha256 = macos_x64_sha,
       build_file_content = _DART_SDK_BUILD_FILE,
+  )
+
+
+def proto_repositories():
+  git_repository(
+      name = "com_google_protobuf",
+      commit = "v3.10.1",
+      remote = "https://github.com/protocolbuffers/protobuf",
+      shallow_since = "1558721209 -0700",
   )

@@ -1,0 +1,8 @@
+syntax = "proto2";
+
+package ex;
+
+message Person {
+  required string firstname = 1;
+  required string lastname = 2;
+}
