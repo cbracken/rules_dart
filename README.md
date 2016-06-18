@@ -54,3 +54,9 @@ Web rules
 `dart_web_application`: Compiles the specified script to JavaScript.
 
 `dart_web_test`: Builds a test that will be executed in the browser.
+
+
+Protocol Buffer rules
+---------------------
+
+`dart_proto_library`: Generates Dart implementations of `.proto` dependencies.

@@ -1,0 +1,9 @@
+syntax = "proto2";
+
+package ex;
+
+message Device {
+  required string brand = 1;
+  required string model = 2;
+}
+
