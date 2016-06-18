@@ -19,6 +19,7 @@ dart_web_binary(
     name = "js_debug",
     srcs = [":gen_lib"] + glob(["web/**"]),
     script_file = "web/main.dart",
+    deferred_lib_count = 1,
     checked = True,
     minify = False,
     dump_info = True,
@@ -29,6 +30,7 @@ dart_web_binary(
     name = "js_release",
     srcs = glob(["web/**"]),
     script_file = "web/main.dart",
+    deferred_lib_count = 1,
     deps = [
         ":web_app",
         "//examples/hello_lib",

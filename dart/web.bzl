@@ -20,7 +20,7 @@ load("//dart:common.bzl", "layout_action", "make_dart_context", "package_spec_ac
 
 def dart2js_action(ctx, dart_ctx, script_file,
                    checked, csp, dump_info, minify, preserve_uris,
-                   js_output, other_outputs):
+                   js_output, part_outputs, other_outputs):
   """dart2js compile action"""
   # Create a build directory.
   build_dir = ctx.label.name + ".build/"
@@ -41,7 +41,8 @@ def dart2js_action(ctx, dart_ctx, script_file,
   out_script = build_dir_files[script_file.short_path]
 
   # Compute action inputs.
-  inputs = ctx.files._dart2js_support
+  inputs = ctx.files._dart2js
+  inputs += ctx.files._dart2js_support
   inputs += build_dir_files.values()
   inputs += [package_spec]
 
@@ -63,9 +64,14 @@ def dart2js_action(ctx, dart_ctx, script_file,
   dart2js_args += [out_script.path]
   ctx.action(
       inputs=inputs,
-      executable=ctx.executable._dart2js,
-      arguments=dart2js_args,
-      outputs=[js_output] + other_outputs,
+      executable=ctx.executable._dart2js_helper,
+      arguments=[
+          str(ctx.label),
+          str(ctx.attr.deferred_lib_count),
+          ctx.outputs.js.path,
+          ctx.executable._dart2js.path,
+      ] + dart2js_args,
+      outputs=[js_output] + part_outputs + other_outputs,
       progress_message="Compiling with dart2js %s" % ctx,
       mnemonic="Dart2jsCompile",
   )
@@ -85,6 +91,10 @@ def _dart_web_binary_impl(ctx):
   ]
   if ctx.attr.dump_info:
     other_outputs += [ctx.outputs.info_json]
+  part_outputs = []
+  for i in range(1, ctx.attr.deferred_lib_count + 1):
+    part_outputs += [getattr(ctx.outputs, "part_js%s" % i)]
+    other_outputs += [getattr(ctx.outputs, "part_sourcemap%s" % i)]
 
   # Invoke dart2js.
   dart2js_action(
@@ -97,6 +107,7 @@ def _dart_web_binary_impl(ctx):
       minify=ctx.attr.minify,
       preserve_uris=ctx.attr.preserve_uris,
       js_output=js_output,
+      part_outputs=part_outputs,
       other_outputs=other_outputs,
   )
 
@@ -110,6 +121,7 @@ _dart_web_binary_attrs = {
     "srcs": attr.label_list(allow_files=True, mandatory=True),
     "data": attr.label_list(allow_files=True, cfg=DATA_CFG),
     "deps": attr.label_list(providers=["dart"]),
+    "deferred_lib_count": attr.int(default=0),
     # compiler flags
     "checked": attr.bool(default=False),
     "csp": attr.bool(default=False),
@@ -123,6 +135,9 @@ _dart_web_binary_attrs = {
     "_dart2js_support": attr.label(
         allow_files=True,
         default=Label("//dart:dart2js_support")),
+    "_dart2js_helper": attr.label(
+        allow_files=True, single_file=True, executable=True,
+        default=Label("//dart/tools:dart2js_helper")),
 }
 
 
@@ -134,6 +149,9 @@ def _dart_web_binary_outputs(attrs):
   }
   if attrs.dump_info:
     outputs["info_json"] = "%{name}.js.info.json"
+  for i in range(1, attrs.deferred_lib_count + 1):
+    outputs["part_js%s" % i] = "%%{name}.js_%s.part.js" % i
+    outputs["part_sourcemap%s" % i] = "%%{name}.js_%s.part.js.map" % i
   return outputs
 
 
