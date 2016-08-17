@@ -2,7 +2,7 @@
 set -e
 
 # All sources are resolved relative to the $RUNFILES dir.
-if [[ -n "$TEST_SRCDIR" ]]; then
+if [[ -n "$TEST_SRCDIR" && -d "$TEST_SRCDIR" ]]; then
   # use $TEST_SRCDIR if set.
   export RUNFILES="$TEST_SRCDIR"
 elif [[ -z "$RUNFILES" ]]; then
