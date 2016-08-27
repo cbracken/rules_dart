@@ -141,15 +141,15 @@ _dart_web_binary_attrs = {
 }
 
 
-def _dart_web_binary_outputs(attrs):
+def _dart_web_binary_outputs(dump_info, deferred_lib_count):
   outputs = {
       "js": "%{name}.js",
       "deps_file": "%{name}.js.deps",
       "sourcemap": "%{name}.js.map",
   }
-  if attrs.dump_info:
+  if dump_info:
     outputs["info_json"] = "%{name}.js.info.json"
-  for i in range(1, attrs.deferred_lib_count + 1):
+  for i in range(1, deferred_lib_count + 1):
     outputs["part_js%s" % i] = "%%{name}.js_%s.part.js" % i
     outputs["part_sourcemap%s" % i] = "%%{name}.js_%s.part.js.map" % i
   return outputs
