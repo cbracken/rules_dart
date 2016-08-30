@@ -15,9 +15,6 @@
 """Dart rules shared across deployment platforms"""
 
 
-dart_filetypes = FileType([".dart"])
-
-
 _third_party_prefix = "third_party/dart/"
 
 
