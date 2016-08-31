@@ -95,7 +95,7 @@ _dart_vm_binary_attrs = {
     "snapshot": attr.bool(default=True),
     "_dart_vm": attr.label(
         allow_files=True, single_file=True, executable=True,
-        default=Label("//dart:dart_vm")),
+        default=Label("//dart/sdk:dart_vm")),
     "_entrypoint_template": attr.label(
         single_file=True,
         default=Label("//dart/templates:dart_vm_binary")),
@@ -232,7 +232,7 @@ _dart_vm_test_attrs = {
     "deps": attr.label_list(providers=["dart"]),
     "_dart_vm": attr.label(
         allow_files=True, single_file=True, executable=True,
-        default=Label("//dart:dart_vm")),
+        default=Label("//dart/sdk:dart_vm")),
     "_entrypoint_template": attr.label(
         single_file=True,
         default=Label("//dart/templates:dart_vm_test_template")),
