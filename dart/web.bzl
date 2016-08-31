@@ -77,7 +77,7 @@ def dart2js_action(ctx, dart_ctx, script_file,
   )
 
 
-def _dart_web_binary_impl(ctx):
+def _dart_web_application_impl(ctx):
   dart_ctx = make_dart_context(ctx.label,
                                srcs=ctx.files.srcs,
                                data=ctx.files.data,
@@ -115,7 +115,7 @@ def _dart_web_binary_impl(ctx):
   return struct()
 
 
-_dart_web_binary_attrs = {
+_dart_web_application_attrs = {
     "script_file": attr.label(
         allow_files=True, single_file=True, mandatory=True),
     "srcs": attr.label_list(allow_files=True, mandatory=True),
@@ -141,7 +141,7 @@ _dart_web_binary_attrs = {
 }
 
 
-def _dart_web_binary_outputs(dump_info, deferred_lib_count):
+def _dart_web_application_outputs(dump_info, deferred_lib_count):
   outputs = {
       "js": "%{name}.js",
       "deps_file": "%{name}.js.deps",
@@ -155,8 +155,8 @@ def _dart_web_binary_outputs(dump_info, deferred_lib_count):
   return outputs
 
 
-dart_web_binary = rule(
-    implementation=_dart_web_binary_impl,
-    attrs=_dart_web_binary_attrs,
-    outputs=_dart_web_binary_outputs,
+dart_web_application = rule(
+    implementation=_dart_web_application_impl,
+    attrs=_dart_web_application_attrs,
+    outputs=_dart_web_application_outputs,
 )

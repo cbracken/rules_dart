@@ -1,5 +1,5 @@
 load("//dart:core.bzl", "dart_library")
-load("//dart:web.bzl", "dart_web_binary")
+load("//dart:web.bzl", "dart_web_application")
 
 package(default_visibility = ["//visibility:public"])
 
@@ -16,7 +16,7 @@ genrule(
     outs = ["web/generated.dart"],
 )
 
-dart_web_binary(
+dart_web_application(
     name = "js_debug",
     srcs = [":gen_lib"] + glob(["web/**"]),
     script_file = "web/main.dart",
@@ -27,7 +27,7 @@ dart_web_binary(
     deps = [":web_app"],
 )
 
-dart_web_binary(
+dart_web_application(
     name = "js_release",
     srcs = glob(["web/**"]),
     script_file = "web/main.dart",

@@ -9,7 +9,7 @@ Expect frequent breaking changes.
   * dart\_vm\_binary
   * dart\_vm\_snapshot
   * dart\_vm\_test
-  * dart\_web\_binary
+  * dart\_web\_application
   * dart\_web\_test
 
 ## Overview
@@ -56,6 +56,6 @@ files are *not* guaranteed to be compatible across VM releases.
 
 ## Web rules
 
-`dart_web_binary`: Compiles the specified script to JavaScript.
+`dart_web_application`: Compiles the specified script to JavaScript.
 
 `dart_web_test`: Builds a test that will be executed in the browser.
