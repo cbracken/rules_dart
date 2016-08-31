@@ -7,8 +7,8 @@ if [[ -n "$TEST_SRCDIR" && -d "$TEST_SRCDIR" ]]; then
   export RUNFILES="$TEST_SRCDIR"
 elif [[ -z "$RUNFILES" ]]; then
   # canonicalize the entrypoint.
-  pushd "$(dirname $0)" > /dev/null
-  abs_entrypoint="$(pwd -P)/$(basename $0)"
+  pushd "$(dirname "$0")" > /dev/null
+  abs_entrypoint="$(pwd -P)/$(basename "$0")"
   popd > /dev/null
   if [[ -e "${abs_entrypoint}.runfiles" ]]; then
     # runfiles dir found alongside entrypoint.
