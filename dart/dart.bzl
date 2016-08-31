@@ -14,7 +14,7 @@
 
 """Dart rules for Bazel"""
 
-load("//dart:common.bzl", "dart_library")
+load("//dart:core.bzl", "dart_library")
 load("//dart:repositories.bzl", "dart_repositories")
 load("//dart:vm.bzl", "dart_vm_binary", "dart_vm_snapshot", "dart_vm_test")
 load("//dart:web.bzl", "dart_web_binary")

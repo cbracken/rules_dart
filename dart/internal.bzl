@@ -12,7 +12,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Dart rules shared across deployment platforms"""
+"""Internal implemenation utility functions for Dart rules
+
+WARNING: NOT A PUBLIC API.
+
+This code is public only by virtue of the fact that Bazel does not yet support
+a mechanism for enforcing limitied visibility of Skylark rules. This code makes
+no gurantees of API stability and is intended solely for use by the Dart rules.
+"""
 
 
 _third_party_prefix = "third_party/dart/"
@@ -105,33 +112,6 @@ def _collect_files(srcs, data, deps):
   transitive_srcs += srcs
   transitive_data += data
   return (transitive_srcs, transitive_data, transitive_deps)
-
-
-def _dart_library_impl(ctx):
-  """Implements the dart_library() rule."""
-  dart_ctx = make_dart_context(ctx.label,
-                               srcs=ctx.files.srcs,
-                               data=ctx.files.data,
-                               deps=ctx.attr.deps)
-
-  # TODO(cbracken) consider enforcing license attr on //third-party/dart.
-  return struct(
-      dart=dart_ctx,
-  )
-
-
-dart_library_attrs = {
-    "srcs": attr.label_list(allow_files=True, mandatory=True),
-    "data": attr.label_list(allow_files=True, cfg=DATA_CFG),
-    "deps": attr.label_list(providers=["dart"]),
-    "license": attr.label(allow_files=True, single_file=True)
-}
-
-
-dart_library = rule(
-    implementation=_dart_library_impl,
-    attrs=dart_library_attrs,
-)
 
 
 def _merge_dart_context(dart_ctx1, dart_ctx2):

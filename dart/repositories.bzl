@@ -14,6 +14,7 @@
 
 """Repositories for Dart"""
 
+
 DART_BUILD_FILE = """
 package(default_visibility = [ "//visibility:public" ])
 
@@ -50,6 +51,7 @@ filegroup(
   ]),
 )
 """
+
 
 def dart_repositories():
   native.new_http_archive(

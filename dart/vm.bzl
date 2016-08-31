@@ -14,7 +14,9 @@
 
 """Dart rules targeting the Dart VM"""
 
-load("//dart:common.bzl", "layout_action", "package_spec_action", "make_dart_context")
+
+load(":internal.bzl", "layout_action", "make_dart_context", "package_spec_action")
+
 
 def _dart_vm_binary_impl(ctx):
   """Implements the dart_vm_binary() rule."""
