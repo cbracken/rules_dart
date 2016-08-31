@@ -11,8 +11,8 @@ filegroup(
 filegroup(
     name = "dart_vm_test_template",
     srcs = select({
-        "//conditions:default": [":dart_vm_test"],
         "//dart:coverage_config": [":dart_vm_test_coverage"],
+        "//conditions:default": [":dart_vm_test"],
     }),
 )
 
