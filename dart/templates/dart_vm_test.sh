@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-# All sources are resolved relative to the $RUNFILES dir.
+# All sources are resolved relative to $RUNFILES.
 if [[ -n "$TEST_SRCDIR" && -d "$TEST_SRCDIR" ]]; then
   # use $TEST_SRCDIR if set.
   export RUNFILES="$TEST_SRCDIR"
@@ -24,4 +24,4 @@ fi
 dart="$RUNFILES/%workspace%/%dart_vm%"
 package_spec="$RUNFILES/%workspace%/%package_spec%"
 script_file="$RUNFILES/%workspace%/%script_file%"
-"$dart" %vm_flags% --packages="$package_spec" "$script_file" %script_args% "$@"
+"$dart" --packages="$package_spec" %vm_flags% "$script_file" %script_args% "$@"
