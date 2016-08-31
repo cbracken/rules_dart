@@ -125,7 +125,7 @@ def _collect_files(srcs, data, deps):
     transitive_srcs += dep.dart.transitive_srcs
     transitive_data += dep.dart.transitive_data
     transitive_deps += dep.dart.transitive_deps
-    transitive_deps['%s' % dep.dart.label] = dep
+    transitive_deps["%s" % dep.dart.label] = dep
   transitive_srcs += srcs
   transitive_data += data
   return (transitive_srcs, transitive_data, transitive_deps)
