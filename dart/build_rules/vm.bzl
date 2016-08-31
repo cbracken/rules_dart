@@ -98,7 +98,7 @@ _dart_vm_binary_attrs = {
         default=Label("//dart/sdk:dart_vm")),
     "_entrypoint_template": attr.label(
         single_file=True,
-        default=Label("//dart/templates:dart_vm_binary")),
+        default=Label("//dart/build_rules/templates:dart_vm_binary")),
 }
 
 
@@ -235,7 +235,7 @@ _dart_vm_test_attrs = {
         default=Label("//dart/sdk:dart_vm")),
     "_entrypoint_template": attr.label(
         single_file=True,
-        default=Label("//dart/templates:dart_vm_test_template")),
+        default=Label("//dart/build_rules/templates:dart_vm_test_template")),
 }
 
 

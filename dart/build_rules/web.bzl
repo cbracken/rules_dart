@@ -138,7 +138,7 @@ _dart_web_application_attrs = {
         default=Label("//dart/sdk:dart2js_support")),
     "_dart2js_helper": attr.label(
         allow_files=True, single_file=True, executable=True,
-        default=Label("//dart/tools:dart2js_helper")),
+        default=Label("//dart/build_rules/tools:dart2js_helper")),
 }
 
 
