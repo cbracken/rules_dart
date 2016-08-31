@@ -245,10 +245,10 @@ def layout_action(ctx, srcs, output_dir):
 
   # Invoke the layout action.
   ctx.action(
-    inputs=list(srcs),
-    outputs=output_files.values(),
-    executable=layout_cmd,
-    progress_message = "Building flattened source layout for %s" % ctx,
-    mnemonic = "DartLayout",
+      inputs=list(srcs),
+      outputs=output_files.values(),
+      executable=layout_cmd,
+      progress_message = "Building flattened source layout for %s" % ctx,
+      mnemonic = "DartLayout",
   )
   return output_files
