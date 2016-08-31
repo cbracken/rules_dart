@@ -236,9 +236,9 @@ def layout_action(ctx, srcs, output_dir):
     output_files[src_file.short_path] = dest_file
 
   # Emit layout script.
-  layout_action = ctx.new_file(ctx.label.name + "_layout.sh")
+  layout_cmd = ctx.new_file(ctx.label.name + "_layout.sh")
   ctx.file_action(
-      output=layout_action,
+      output=layout_cmd,
       content="#!/bin/bash\n" + "\n".join(commands),
       executable=True,
   )
@@ -247,7 +247,7 @@ def layout_action(ctx, srcs, output_dir):
   ctx.action(
     inputs=list(srcs),
     outputs=output_files.values(),
-    executable=layout_action,
+    executable=layout_cmd,
     progress_message = "Building flattened source layout for %s" % ctx,
     mnemonic = "DartLayout",
   )
