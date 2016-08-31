@@ -216,9 +216,9 @@ def _dart_vm_test_impl(ctx):
 
   return struct(
       runfiles=runfiles,
-      instrumented_files = struct(
-          source_attributes = ["srcs"],
-          dependency_attributes = ["deps"],
+      instrumented_files=struct(
+          source_attributes=["srcs"],
+          dependency_attributes=["deps"],
       ),
   )
 

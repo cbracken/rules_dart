@@ -73,9 +73,9 @@ def _new_dart_context(label,
       srcs=set(srcs or []),
       data=set(data or []),
       deps=deps or [],
-      transitive_srcs = set(transitive_srcs or []),
-      transitive_data = set(transitive_data or []),
-      transitive_deps = dict(transitive_deps or {}),
+      transitive_srcs=set(transitive_srcs or []),
+      transitive_data=set(transitive_data or []),
+      transitive_deps=dict(transitive_deps or {}),
   )
 
 
@@ -100,9 +100,9 @@ def make_dart_context(label,
       srcs=srcs,
       data=data,
       deps=deps,
-      transitive_srcs = transitive_srcs,
-      transitive_data = transitive_data,
-      transitive_deps = transitive_deps,
+      transitive_srcs=transitive_srcs,
+      transitive_data=transitive_data,
+      transitive_deps=transitive_deps,
   )
 
 
@@ -248,7 +248,7 @@ def layout_action(ctx, srcs, output_dir):
       inputs=list(srcs),
       outputs=output_files.values(),
       executable=layout_cmd,
-      progress_message = "Building flattened source layout for %s" % ctx,
-      mnemonic = "DartLayout",
+      progress_message="Building flattened source layout for %s" % ctx,
+      mnemonic="DartLayout",
   )
   return output_files
