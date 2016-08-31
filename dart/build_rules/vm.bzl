@@ -47,7 +47,6 @@ def _dart_vm_binary_impl(ctx):
       dart_ctx=dart_ctx,
       output=package_spec,
   )
-  vm_flags = ctx.attr.vm_flags
 
   # Emit entrypoint script.
   ctx.template_action(
@@ -112,7 +111,6 @@ dart_vm_binary = rule(
 def vm_snapshot_action(ctx, dart_ctx, output, vm_flags, script_file, script_args):
   """Emits a Dart VM snapshot."""
   build_dir = ctx.label.name + ".build/"
-  root_relative_build_dir = ctx.label.package + "/" + build_dir
 
   # Emit package spec.
   package_spec_path = ctx.label.package + "/" + ctx.label.name + ".packages"

@@ -24,7 +24,6 @@ def dart2js_action(ctx, dart_ctx, script_file,
   """dart2js compile action."""
   # Create a build directory.
   build_dir = ctx.label.name + ".build/"
-  root_relative_build_dir = ctx.label.package + "/" + build_dir
 
   # Emit package spec.
   package_spec_path = ctx.label.package + "/" + ctx.label.name + ".packages"
