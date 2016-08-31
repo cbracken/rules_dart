@@ -10,6 +10,13 @@ config_setting(
     values = {"host_cpu": "k8"},
 )
 
+config_setting(
+    name = "coverage_config",
+    values = {
+        "collect_code_coverage": "true",
+    },
+)
+
 filegroup(
     name = "dart_vm",
     srcs = select({
