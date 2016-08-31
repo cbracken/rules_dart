@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Internal implemenation utility functions for Dart rules
+"""Internal implemenation utility functions for Dart rules.
 
 WARNING: NOT A PUBLIC API.
 
@@ -26,7 +26,7 @@ _third_party_prefix = "third_party/dart/"
 
 
 def _label_to_dart_package_name(label):
-  """Returns the Dart package name for the specified label
+  """Returns the Dart package name for the specified label.
 
   Packages under //third_party/dart resolve to their external Pub package names.
   All other packages resolve to a unique identifier based on their repo path.
@@ -40,6 +40,12 @@ def _label_to_dart_package_name(label):
     Since packages outside of //third_party/dart are identified by their path
     components joined by periods, it is an error for the label package to
     contain periods.
+
+  Args:
+    label: the label whose package name is to be returned.
+
+  Returns:
+    The Dart package name associated with the label.
   """
   package_name = label.package
   if label.package.startswith(_third_party_prefix):
@@ -101,6 +107,17 @@ def make_dart_context(label,
 
 
 def _collect_files(srcs, data, deps):
+  """Collects all srcs, data from the specified deps.
+
+  Args:
+    srcs: input srcs File collection.
+    data: input data File collection.
+    deps: input deps Target collection. All targets must have a 'dart' provider.
+
+  Returns:
+    Tuple of collected srcs, data, deps. srcs and data contain all srcs and
+    data from srcs as well as those associated with all deps.
+  """
   transitive_srcs = set()
   transitive_data = set()
   transitive_deps = {}
@@ -115,6 +132,7 @@ def _collect_files(srcs, data, deps):
 
 
 def _merge_dart_context(dart_ctx1, dart_ctx2):
+  """Merges two dart contexts whose package and lib_root must be identical."""
   if dart_ctx1.package != dart_ctx2.package:
     fail("Incompatible packages: %s and %s" % (dart_ctx1.package,
                                                dart_ctx2.package))
@@ -138,6 +156,7 @@ def _merge_dart_context(dart_ctx1, dart_ctx2):
 
 
 def _collect_dart_context(dart_ctx, transitive=True, include_self=True):
+  """Collects and returns dart contexts."""
   # Collect direct or transitive deps.
   dart_ctxs = [dart_ctx]
   if transitive:
@@ -195,6 +214,14 @@ def layout_action(ctx, srcs, output_dir):
 
   For each file f in srcs, a file is emitted at output_dir/f.short_path.
   Returns a dict mapping short_path to the emitted file.
+
+  Args:
+    ctx: the build context.
+    srcs: the set of input srcs to be flattened.
+    output_dir: the full output directory path into which the files are emitted.
+
+  Returns:
+    A map from input file short_path to File in output_dir.
   """
   commands = []
   output_files = {}

@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Dart rules targeting the Dart VM"""
+"""Dart rules targeting the Dart VM."""
 
 
 load(":internal.bzl", "layout_action", "make_dart_context", "package_spec_action")
@@ -110,7 +110,7 @@ dart_vm_binary = rule(
 
 
 def vm_snapshot_action(ctx, dart_ctx, output, vm_flags, script_file, script_args):
-  """Emits a Dart VM snapshot"""
+  """Emits a Dart VM snapshot."""
   build_dir = ctx.label.name + ".build/"
   root_relative_build_dir = ctx.label.package + "/" + build_dir
 
@@ -148,6 +148,7 @@ def vm_snapshot_action(ctx, dart_ctx, output, vm_flags, script_file, script_args
 
 
 def _dart_vm_snapshot_impl(ctx):
+  """Implements the dart_vm_snapshot build rule."""
   dart_ctx = make_dart_context(ctx.label,
                                srcs=ctx.files.srcs,
                                data=ctx.files.data,

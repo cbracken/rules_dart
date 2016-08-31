@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Dart rules shared across deployment platforms"""
+"""Dart rules shared across deployment platforms."""
 
 
 load(":internal.bzl", "make_dart_context")

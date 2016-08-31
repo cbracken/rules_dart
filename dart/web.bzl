@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Dart rules targeting web clients"""
+"""Dart rules targeting web clients."""
 
 
 load(":internal.bzl", "layout_action", "make_dart_context", "package_spec_action")
@@ -21,7 +21,7 @@ load(":internal.bzl", "layout_action", "make_dart_context", "package_spec_action
 def dart2js_action(ctx, dart_ctx, script_file,
                    checked, csp, dump_info, minify, preserve_uris,
                    js_output, part_outputs, other_outputs):
-  """dart2js compile action"""
+  """dart2js compile action."""
   # Create a build directory.
   build_dir = ctx.label.name + ".build/"
   root_relative_build_dir = ctx.label.package + "/" + build_dir
@@ -78,6 +78,7 @@ def dart2js_action(ctx, dart_ctx, script_file,
 
 
 def _dart_web_application_impl(ctx):
+  """Implements the dart_web_application build rule."""
   dart_ctx = make_dart_context(ctx.label,
                                srcs=ctx.files.srcs,
                                data=ctx.files.data,
@@ -142,6 +143,7 @@ _dart_web_application_attrs = {
 
 
 def _dart_web_application_outputs(dump_info, deferred_lib_count):
+  """Returns the expected output map for dart_web_application."""
   outputs = {
       "js": "%{name}.js",
       "deps_file": "%{name}.js.deps",
