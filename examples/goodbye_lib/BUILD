@@ -1,4 +1,4 @@
-load("//dart:dart.bzl", "dart_library")
+load("//dart:core.bzl", "dart_library")
 
 package(default_visibility = ["//visibility:public"])
 
