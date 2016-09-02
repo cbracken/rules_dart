@@ -119,7 +119,7 @@ _dart_web_application_attrs = {
     "script_file": attr.label(
         allow_files=True, single_file=True, mandatory=True),
     "srcs": attr.label_list(allow_files=True, mandatory=True),
-    "data": attr.label_list(allow_files=True, cfg=DATA_CFG),
+    "data": attr.label_list(allow_files=True, cfg="data"),
     "deps": attr.label_list(providers=["dart"]),
     "deferred_lib_count": attr.int(default=0),
     # compiler flags

@@ -33,7 +33,7 @@ def _dart_library_impl(ctx):
 
 dart_library_attrs = {
     "srcs": attr.label_list(allow_files=True, mandatory=True),
-    "data": attr.label_list(allow_files=True, cfg=DATA_CFG),
+    "data": attr.label_list(allow_files=True, cfg="data"),
     "deps": attr.label_list(providers=["dart"]),
     "license": attr.label(allow_files=True, single_file=True)
 }
