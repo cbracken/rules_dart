@@ -130,13 +130,19 @@ _dart_web_application_attrs = {
     "preserve_uris": attr.bool(default=False),
     # tools
     "_dart2js": attr.label(
-        allow_files=True, single_file=True, executable=True,
+        allow_files=True,
+        single_file=True,
+        executable=True,
+        cfg="host",
         default=Label("//dart/sdk:dart2js")),
     "_dart2js_support": attr.label(
         allow_files=True,
         default=Label("//dart/sdk:dart2js_support")),
     "_dart2js_helper": attr.label(
-        allow_files=True, single_file=True, executable=True,
+        allow_files=True,
+        single_file=True,
+        executable=True,
+        cfg="host",
         default=Label("//dart/build_rules/tools:dart2js_helper")),
 }
 

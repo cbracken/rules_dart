@@ -93,8 +93,12 @@ _dart_vm_binary_attrs = {
     "deps": attr.label_list(providers=["dart"]),
     "snapshot": attr.bool(default=True),
     "_dart_vm": attr.label(
-        allow_files=True, single_file=True, executable=True,
-        default=Label("//dart/sdk:dart_vm")),
+        allow_files=True,
+        single_file=True,
+        executable=True,
+        cfg="host",
+        default=Label("//dart/sdk:dart_vm"),
+    ),
     "_entrypoint_template": attr.label(
         single_file=True,
         default=Label("//dart/build_rules/templates:dart_vm_binary")),
@@ -229,7 +233,10 @@ _dart_vm_test_attrs = {
     "data": attr.label_list(allow_files=True, cfg=DATA_CFG),
     "deps": attr.label_list(providers=["dart"]),
     "_dart_vm": attr.label(
-        allow_files=True, single_file=True, executable=True,
+        allow_files=True,
+        single_file=True,
+        executable=True,
+        cfg="host",
         default=Label("//dart/sdk:dart_vm")),
     "_entrypoint_template": attr.label(
         single_file=True,
