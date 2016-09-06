@@ -144,7 +144,7 @@ def vm_snapshot_action(ctx, dart_ctx, output, vm_flags, script_file, script_args
       outputs=[output],
       executable=ctx.executable._dart_vm,
       arguments=arguments,
-      progress_message="Building Dart VM snapshot",
+      progress_message="Building Dart VM snapshot %s" % ctx,
       mnemonic="DartVMSnapshot",
   )
 
