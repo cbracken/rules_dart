@@ -25,18 +25,13 @@ no gurantees of API stability and is intended solely for use by the Dart rules.
 _third_party_prefix = "third_party/dart/"
 
 
-def collect_transitive_data(dart_ctx):
+def collect_files(dart_ctx):
+  srcs = set(dart_ctx.srcs)
   data = set(dart_ctx.data)
   for d in dart_ctx.transitive_deps.values():
-    data += d.dart.data
-  return data
-
-
-def collect_transitive_srcs(dart_ctx):
-  srcs = set(dart_ctx.srcs)
-  for d in dart_ctx.transitive_deps.values():
     srcs += d.dart.srcs
-  return srcs
+    data += d.dart.data
+  return (srcs, data)
 
 
 def _collect_transitive_deps(deps):
