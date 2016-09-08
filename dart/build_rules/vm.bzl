@@ -15,7 +15,7 @@
 """Dart rules targeting the Dart VM."""
 
 
-load(":internal.bzl", "collect_transitive_srcs", "layout_action", "make_dart_context", "package_spec_action")
+load(":internal.bzl", "collect_transitive_data", "collect_transitive_srcs", "layout_action", "make_dart_context", "package_spec_action")
 
 
 def _dart_vm_binary_impl(ctx):
@@ -64,7 +64,7 @@ def _dart_vm_binary_impl(ctx):
   )
 
   # Compute runfiles.
-  runfiles_files=dart_ctx.transitive_data + [
+  runfiles_files = collect_transitive_data(dart_ctx) + [
       ctx.executable._dart_vm,
       ctx.outputs.executable,
       package_spec,
@@ -210,7 +210,7 @@ def _dart_vm_test_impl(ctx):
   )
 
   # Compute runfiles.
-  runfiles_files = dart_ctx.transitive_data + [
+  runfiles_files = collect_transitive_data(dart_ctx) + [
       ctx.executable._dart_vm,
       ctx.outputs.executable,
   ]
