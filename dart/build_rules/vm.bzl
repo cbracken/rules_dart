@@ -193,8 +193,6 @@ def _dart_vm_test_impl(ctx):
       dart_ctx=dart_ctx,
       output=package_spec,
   )
-  vm_flags = ctx.attr.vm_flags
-  script_file = ctx.file.script_file
 
   # Emit entrypoint script.
   ctx.template_action(
@@ -205,8 +203,8 @@ def _dart_vm_test_impl(ctx):
           "%workspace%": ctx.workspace_name,
           "%dart_vm%": ctx.executable._dart_vm.short_path,
           "%package_spec%": package_spec.short_path,
-          "%vm_flags%": " ".join(vm_flags),
-          "%script_file%": script_file.short_path,
+          "%vm_flags%": " ".join(ctx.attr.vm_flags),
+          "%script_file%": ctx.file.script_file.short_path,
           "%script_args%": " ".join(ctx.attr.script_args),
       },
   )
