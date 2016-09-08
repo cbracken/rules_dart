@@ -139,10 +139,10 @@ _dart_web_application_attrs = {
         single_file=True,
         executable=True,
         cfg="host",
-        default=Label("//dart/sdk:dart2js")),
+        default=Label("//dart/build_rules/ext:dart2js")),
     "_dart2js_support": attr.label(
         allow_files=True,
-        default=Label("//dart/sdk:dart2js_support")),
+        default=Label("//dart/build_rules/ext:dart2js_support")),
     "_dart2js_helper": attr.label(
         allow_files=True,
         single_file=True,
