@@ -15,7 +15,7 @@
 """Dart rules targeting web clients."""
 
 
-load(":internal.bzl", "layout_action", "make_dart_context", "package_spec_action")
+load(":internal.bzl", "collect_transitive_srcs", "layout_action", "make_dart_context", "package_spec_action")
 
 
 def dart2js_action(ctx, dart_ctx, script_file,
@@ -36,7 +36,11 @@ def dart2js_action(ctx, dart_ctx, script_file,
 
   # Build a flattened directory of dart2js inputs, including inputs from the
   # src tree, genfiles, and bin.
-  build_dir_files = layout_action(ctx, dart_ctx.transitive_srcs, build_dir)
+  build_dir_files = layout_action(
+      ctx=ctx,
+      srcs=collect_transitive_srcs(dart_ctx),
+      output_dir=build_dir,
+  )
   out_script = build_dir_files[script_file.short_path]
 
   # Compute action inputs.

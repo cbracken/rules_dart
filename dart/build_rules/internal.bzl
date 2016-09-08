@@ -25,6 +25,13 @@ no gurantees of API stability and is intended solely for use by the Dart rules.
 _third_party_prefix = "third_party/dart/"
 
 
+def collect_transitive_srcs(dart_ctx):
+  srcs = set(dart_ctx.srcs)
+  for d in dart_ctx.transitive_deps.values():
+    srcs += d.dart.srcs
+  return srcs
+
+
 def _label_to_dart_package_name(label):
   """Returns the Dart package name for the specified label.
 
@@ -63,7 +70,6 @@ def _new_dart_context(label,
                       srcs=None,
                       data=None,
                       deps=None,
-                      transitive_srcs=None,
                       transitive_data=None,
                       transitive_deps=None):
   return struct(
@@ -73,7 +79,6 @@ def _new_dart_context(label,
       srcs=set(srcs or []),
       data=set(data or []),
       deps=deps or [],
-      transitive_srcs=set(transitive_srcs or []),
       transitive_data=set(transitive_data or []),
       transitive_deps=dict(transitive_deps or {}),
   )
@@ -92,7 +97,7 @@ def make_dart_context(label,
   srcs = set(srcs or [])
   data = set(data or [])
   deps = deps or []
-  transitive_srcs, transitive_data, transitive_deps = _collect_files(srcs, data, deps)
+  transitive_data, transitive_deps = _collect_files(data, deps)
   return struct(
       label=label,
       package=package,
@@ -100,35 +105,30 @@ def make_dart_context(label,
       srcs=srcs,
       data=data,
       deps=deps,
-      transitive_srcs=transitive_srcs,
       transitive_data=transitive_data,
       transitive_deps=transitive_deps,
   )
 
 
-def _collect_files(srcs, data, deps):
-  """Collects all srcs, data from the specified deps.
+def _collect_files(data, deps):
+  """Collects transitive data and deps from the specified deps.
 
   Args:
-    srcs: input srcs File collection.
     data: input data File collection.
     deps: input deps Target collection. All targets must have a 'dart' provider.
 
   Returns:
-    Tuple of collected srcs, data, deps. srcs and data contain all srcs and
-    data from srcs as well as those associated with all deps.
+    Tuple of collected data, deps. data contains all data from data as well as
+    those associated with all deps.
   """
-  transitive_srcs = set()
   transitive_data = set()
   transitive_deps = {}
   for dep in deps:
-    transitive_srcs += dep.dart.transitive_srcs
     transitive_data += dep.dart.transitive_data
     transitive_deps += dep.dart.transitive_deps
     transitive_deps["%s" % dep.dart.label] = dep
-  transitive_srcs += srcs
   transitive_data += data
-  return (transitive_srcs, transitive_data, transitive_deps)
+  return (transitive_data, transitive_deps)
 
 
 def _merge_dart_context(dart_ctx1, dart_ctx2):
@@ -149,7 +149,6 @@ def _merge_dart_context(dart_ctx1, dart_ctx2):
       srcs=dart_ctx1.srcs + dart_ctx2.srcs,
       data=dart_ctx1.data + dart_ctx2.data,
       deps=dart_ctx1.deps + dart_ctx2.deps,
-      transitive_srcs=dart_ctx1.transitive_srcs + dart_ctx2.transitive_srcs,
       transitive_data=dart_ctx1.transitive_data + dart_ctx2.transitive_data,
       transitive_deps=dart_ctx1.transitive_deps + dart_ctx2.transitive_deps,
   )

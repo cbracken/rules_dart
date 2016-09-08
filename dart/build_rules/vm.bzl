@@ -15,7 +15,7 @@
 """Dart rules targeting the Dart VM."""
 
 
-load(":internal.bzl", "layout_action", "make_dart_context", "package_spec_action")
+load(":internal.bzl", "collect_transitive_srcs", "layout_action", "make_dart_context", "package_spec_action")
 
 
 def _dart_vm_binary_impl(ctx):
@@ -72,7 +72,7 @@ def _dart_vm_binary_impl(ctx):
   if ctx.attr.snapshot:
     runfiles_files += [out_snapshot]
   else:
-    runfiles_files += dart_ctx.transitive_srcs
+    runfiles_files += collect_transitive_srcs(dart_ctx)
   runfiles = ctx.runfiles(
       files=list(runfiles_files),
       collect_data=True,
@@ -127,7 +127,11 @@ def vm_snapshot_action(ctx, dart_ctx, output, vm_flags, script_file, script_args
 
   # Build a flattened directory of dart2js inputs, including inputs from the
   # src tree, genfiles, and bin.
-  build_dir_files = layout_action(ctx, dart_ctx.transitive_srcs, build_dir)
+  build_dir_files = layout_action(
+      ctx=ctx,
+      srcs=collect_transitive_srcs(dart_ctx),
+      output_dir=build_dir,
+  )
   out_script = build_dir_files[script_file.short_path]
 
   # TODO(cbracken) assert --snapshot not in flags
@@ -210,7 +214,7 @@ def _dart_vm_test_impl(ctx):
       ctx.executable._dart_vm,
       ctx.outputs.executable,
   ]
-  runfiles_files += dart_ctx.transitive_srcs
+  runfiles_files += collect_transitive_srcs(dart_ctx)
   runfiles_files += [package_spec]
   runfiles = ctx.runfiles(
       files=list(runfiles_files),
