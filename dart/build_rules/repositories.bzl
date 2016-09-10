@@ -15,7 +15,7 @@
 """Repositories for Dart."""
 
 
-DART_BUILD_FILE = """
+_DART_SDK_BUILD_FILE = """
 package(default_visibility = [ "//visibility:public" ])
 
 filegroup(
@@ -58,12 +58,12 @@ def dart_repositories():
       name = "dart_linux_x86_64",
       url = "https://storage.googleapis.com/dart-archive/channels/stable/release/1.19.1/sdk/dartsdk-linux-x64-release.zip",
       sha256 = "de3634a5572b805172aa3544214a5b1ecf3d16a20956cd5cac3781863cbfdb0a",
-      build_file_content = DART_BUILD_FILE,
+      build_file_content = _DART_SDK_BUILD_FILE,
   )
 
   native.new_http_archive(
       name = "dart_darwin_x86_64",
       url = "https://storage.googleapis.com/dart-archive/channels/stable/release/1.19.1/sdk/dartsdk-macos-x64-release.zip",
       sha256 = "bbcbf5a6c566b3a1a057129158982f4fba54c848e0c3ed4fcee7fdf85d53d885",
-      build_file_content = DART_BUILD_FILE,
+      build_file_content = _DART_SDK_BUILD_FILE,
   )
