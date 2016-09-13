@@ -25,7 +25,7 @@ def _dart_library_impl(ctx):
                                data=ctx.files.data,
                                deps=ctx.attr.deps)
 
-  # TODO(cbracken) consider enforcing license attr on //third-party/dart.
+  # TODO(cbracken) consider enforcing license_files attr on //third-party/dart.
   return struct(
       dart=dart_ctx,
   )
@@ -35,7 +35,7 @@ dart_library_attrs = {
     "srcs": attr.label_list(allow_files=True, mandatory=True),
     "data": attr.label_list(allow_files=True, cfg="data"),
     "deps": attr.label_list(providers=["dart"]),
-    "license": attr.label(allow_files=True, single_file=True)
+    "license_files": attr.label_list(allow_files=True)
 }
 
 
