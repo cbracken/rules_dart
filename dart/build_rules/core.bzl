@@ -15,17 +15,18 @@
 """Dart rules shared across deployment platforms."""
 
 
-load(":internal.bzl", "make_dart_context")
+load(":internal.bzl", "assert_third_party_licenses", "make_dart_context")
 
 
 def _dart_library_impl(ctx):
   """Implements the dart_library() rule."""
+  assert_third_party_licenses(ctx)
+
   dart_ctx = make_dart_context(ctx.label,
                                srcs=ctx.files.srcs,
                                data=ctx.files.data,
                                deps=ctx.attr.deps)
 
-  # TODO(cbracken) consider enforcing license_files attr on //third-party/dart.
   return struct(
       dart=dart_ctx,
   )

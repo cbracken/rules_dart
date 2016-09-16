@@ -25,6 +25,15 @@ no gurantees of API stability and is intended solely for use by the Dart rules.
 _third_party_prefix = "third_party/dart/"
 
 
+def assert_third_party_licenses(ctx):
+  """Asserts license attr on non-testonly third-party packages."""
+  if (not ctx.attr.testonly
+      and not ctx.attr.license_files
+      and ctx.label.package.startswith(_third_party_prefix)):
+    fail("%s lacks license_files attribute, " % ctx.label +
+         "required for all non-testonly third-party Dart library rules")
+
+
 def collect_files(dart_ctx):
   srcs = set(dart_ctx.srcs)
   data = set(dart_ctx.data)
