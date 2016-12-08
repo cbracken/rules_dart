@@ -1,3 +1,11 @@
+# WE'VE MOVED!
+
+These rules have moved to
+[a more permanent home](https://github.com/dart-lang/rules_dart) under the
+dart-lang organisation. Please update your bookmarks.
+
+This repo will remain until the `dart_proto_library` branch is merged upstream.
+
 # Dart rules
 
 **WARNING** These are in active development and are *not* production-ready.
