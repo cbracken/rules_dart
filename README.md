@@ -1,15 +1,9 @@
-# WE'VE MOVED!
+# Dart rules for Bazel
 
-These rules have moved to
-[a more permanent home](https://github.com/dart-lang/rules_dart) under the
-dart-lang organisation. Please update your bookmarks.
-
-This repo will remain until the `dart_proto_library` branch is merged upstream.
-
-# Dart rules
-
-**WARNING** These are in active development and are *not* production-ready.
-Expect frequent breaking changes.
+**WARNING** These rules had moved to a
+[repo](https://github.com/dart-lang/rules_dart) under the dart-lang
+organisation which was later deprecated and archived. They are maintained here
+on an infrequent basis.
 
 ## Rules
 
@@ -23,7 +17,7 @@ Expect frequent breaking changes.
 ## Overview
 
 These build rules are used for building [Dart](https://dartlang.org) projects
-with Bazel.
+with [Bazel](https://bazel.build).
 
 ## Setup
 
