@@ -35,11 +35,11 @@ def assert_third_party_licenses(ctx):
 
 
 def collect_files(dart_ctx):
-  srcs = set(dart_ctx.srcs)
-  data = set(dart_ctx.data)
+  srcs = dart_ctx.srcs
+  data = dart_ctx.data
   for d in dart_ctx.transitive_deps.values():
-    srcs += d.dart.srcs
-    data += d.dart.data
+    srcs = srcs + d.dart.srcs
+    data = srcs + d.dart.data
   return (srcs, data)
 
 
@@ -54,7 +54,7 @@ def _collect_transitive_deps(deps):
   """
   transitive_deps = {}
   for dep in deps:
-    transitive_deps += dep.dart.transitive_deps
+    transitive_deps.update(dep.dart.transitive_deps)
     transitive_deps["%s" % dep.dart.label] = dep
   return transitive_deps
 
@@ -102,8 +102,8 @@ def _new_dart_context(label,
       label=label,
       package=package,
       lib_root=lib_root,
-      srcs=set(srcs or []),
-      data=set(data or []),
+      srcs=srcs or [],
+      data=data or [],
       deps=deps or [],
       transitive_deps=dict(transitive_deps or {}),
   )
@@ -119,8 +119,8 @@ def make_dart_context(label,
     package = _label_to_dart_package_name(label)
   if not lib_root:
     lib_root = "%s/lib/" % label.package
-  srcs = set(srcs or [])
-  data = set(data or [])
+  srcs = srcs or []
+  data = data or []
   deps = deps or []
   transitive_deps = _collect_transitive_deps(deps)
   return struct(
@@ -145,6 +145,8 @@ def _merge_dart_context(dart_ctx1, dart_ctx2):
          "  %s declares: %s\n" % (dart_ctx2.label, dart_ctx2.lib_root) +
          "Targets in the same package must declare the same lib_root")
 
+  transitive_deps = dart_ctx1.transitive_deps
+  transitive_deps.update(dart_ctx1.transitive_deps)
   return _new_dart_context(
       label=dart_ctx1.label,
       package=dart_ctx1.package,
@@ -152,7 +154,7 @@ def _merge_dart_context(dart_ctx1, dart_ctx2):
       srcs=dart_ctx1.srcs + dart_ctx2.srcs,
       data=dart_ctx1.data + dart_ctx2.data,
       deps=dart_ctx1.deps + dart_ctx2.deps,
-      transitive_deps=dart_ctx1.transitive_deps + dart_ctx2.transitive_deps,
+      transitive_deps=transitive_deps,
   )
 
 
