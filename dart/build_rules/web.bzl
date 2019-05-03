@@ -45,10 +45,11 @@ def dart2js_action(ctx, dart_ctx, script_file,
   out_script = build_dir_files[script_file.short_path]
 
   # Compute action inputs.
-  inputs = ctx.files._dart2js
-  inputs += ctx.files._dart2js_support
-  inputs += build_dir_files.values()
-  inputs += [package_spec]
+  inputs = (
+      ctx.files._dart2js +
+      ctx.files._dart2js_support +
+      build_dir_files.values() + [package_spec]
+  )
 
   # Compute dart2js args.
   dart2js_args = [
@@ -120,36 +121,6 @@ def _dart_web_application_impl(ctx):
   return struct()
 
 
-_dart_web_application_attrs = {
-    "script_file": attr.label(
-        allow_files=True, single_file=True, mandatory=True),
-    "srcs": attr.label_list(allow_files=True, mandatory=True),
-    "data": attr.label_list(allow_files=True, cfg="data"),
-    "deps": attr.label_list(providers=["dart"]),
-    "deferred_lib_count": attr.int(default=0),
-    # compiler flags
-    "checked": attr.bool(default=False),
-    "csp": attr.bool(default=False),
-    "dump_info": attr.bool(default=False),
-    "minify": attr.bool(default=True),
-    "preserve_uris": attr.bool(default=False),
-    # tools
-    "_dart2js": attr.label(
-        allow_files=True,
-        single_file=True,
-        executable=True,
-        cfg="host",
-        default=Label("//dart/build_rules/ext:dart2js")),
-    "_dart2js_support": attr.label(
-        allow_files=True,
-        default=Label("//dart/build_rules/ext:dart2js_support")),
-    "_dart2js_helper": attr.label(
-        allow_files=True,
-        single_file=True,
-        executable=True,
-        cfg="host",
-        default=Label("//dart/build_rules/tools:dart2js_helper")),
-}
 
 
 def _dart_web_application_outputs(dump_info, deferred_lib_count):
@@ -169,6 +140,35 @@ def _dart_web_application_outputs(dump_info, deferred_lib_count):
 
 dart_web_application = rule(
     implementation=_dart_web_application_impl,
-    attrs=_dart_web_application_attrs,
+    attrs={
+        "script_file": attr.label(
+            allow_files=True, single_file=True, mandatory=True),
+        "srcs": attr.label_list(allow_files=True, mandatory=True),
+        "data": attr.label_list(allow_files=True),
+        "deps": attr.label_list(providers=["dart"]),
+        "deferred_lib_count": attr.int(default=0),
+        # compiler flags
+        "checked": attr.bool(default=False),
+        "csp": attr.bool(default=False),
+        "dump_info": attr.bool(default=False),
+        "minify": attr.bool(default=True),
+        "preserve_uris": attr.bool(default=False),
+        # tools
+        "_dart2js": attr.label(
+            allow_files=True,
+            single_file=True,
+            executable=True,
+            cfg="host",
+            default=Label("//dart/build_rules/ext:dart2js")),
+        "_dart2js_support": attr.label(
+            allow_files=True,
+            default=Label("//dart/build_rules/ext:dart2js_support")),
+        "_dart2js_helper": attr.label(
+            allow_files=True,
+            single_file=True,
+            executable=True,
+            cfg="host",
+            default=Label("//dart/build_rules/tools:dart2js_helper")),
+    },
     outputs=_dart_web_application_outputs,
 )

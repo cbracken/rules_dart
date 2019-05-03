@@ -90,7 +90,7 @@ _dart_vm_binary_attrs = {
     "script_args": attr.string_list(),
     "vm_flags": attr.string_list(),
     "srcs": attr.label_list(allow_files=True, mandatory=True),
-    "data": attr.label_list(allow_files=True, cfg="data"),
+    "data": attr.label_list(allow_files=True),
     "deps": attr.label_list(providers=["dart"]),
     "snapshot": attr.bool(default=True),
     "_dart_vm": attr.label(
@@ -235,7 +235,7 @@ _dart_vm_test_attrs = {
     "script_args": attr.string_list(),
     "vm_flags": attr.string_list(),
     "srcs": attr.label_list(allow_files=True, mandatory=True),
-    "data": attr.label_list(allow_files=True, cfg="data"),
+    "data": attr.label_list(allow_files=True),
     "deps": attr.label_list(providers=["dart"]),
     "_dart_vm": attr.label(
         allow_files=True,
