@@ -21,7 +21,7 @@ dart_web_application(
     srcs = [":gen_lib"] + glob(["web/**"]),
     script_file = "web/main.dart",
     deferred_lib_count = 1,
-    checked = True,
+    enable_asserts = True,
     minify = False,
     dump_info = True,
     deps = [":web_app"],
