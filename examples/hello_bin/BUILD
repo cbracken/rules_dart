@@ -16,7 +16,7 @@ dart_vm_binary(
     srcs = ["bin/hello.dart"],
     script_file = "bin/hello.dart",
     script_args = ["foo", "bar"],
-    vm_flags = ["--checked"],
+    vm_flags = ["--enable-asserts"],
     deps = [
         "//examples/hello_lib",
     ],
@@ -37,7 +37,7 @@ dart_vm_binary(
     srcs = ["bin/hello.dart"],
     script_file = "bin/hello.dart",
     script_args = ["foo", "bar"],
-    vm_flags = ["--checked"],
+    vm_flags = ["--enable-asserts"],
     deps = [
         "//examples/hello_lib",
     ],

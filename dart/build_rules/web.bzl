@@ -19,7 +19,7 @@ load(":internal.bzl", "collect_files", "layout_action", "make_dart_context", "pa
 
 
 def dart2js_action(ctx, dart_ctx, script_file,
-                   checked, csp, dump_info, minify, preserve_uris,
+                   enable_asserts, csp, dump_info, minify, preserve_uris,
                    js_output, part_outputs, other_outputs):
   """dart2js compile action."""
   # Create a build directory.
@@ -56,8 +56,8 @@ def dart2js_action(ctx, dart_ctx, script_file,
       "--packages=%s" % package_spec.path,
       "--out=%s" % js_output.path,
   ]
-  if checked:
-    dart2js_args += ["--checked"]
+  if enable_asserts:
+    dart2js_args += ["--enable-asserts"]
   if csp:
     dart2js_args += ["--csp"]
   if dump_info:
@@ -107,7 +107,7 @@ def _dart_web_application_impl(ctx):
       ctx=ctx,
       dart_ctx=dart_ctx,
       script_file=ctx.file.script_file,
-      checked=ctx.attr.checked,
+      enable_asserts=ctx.attr.enable_asserts,
       csp=ctx.attr.csp,
       dump_info=ctx.attr.dump_info,
       minify=ctx.attr.minify,
@@ -148,7 +148,7 @@ dart_web_application = rule(
         "deps": attr.label_list(providers=["dart"]),
         "deferred_lib_count": attr.int(default=0),
         # compiler flags
-        "checked": attr.bool(default=False),
+        "enable_asserts": attr.bool(default=False),
         "csp": attr.bool(default=False),
         "dump_info": attr.bool(default=False),
         "minify": attr.bool(default=True),
