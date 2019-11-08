@@ -6,16 +6,6 @@ Dart rules for Bazel
 organisation which was later deprecated and archived. They are maintained here
 on an infrequent basis.
 
-Rules
------
-
-  * dart\_library
-  * dart\_vm\_binary
-  * dart\_vm\_snapshot
-  * dart\_vm\_test
-  * dart\_web\_application
-  * dart\_web\_test
-
 Overview
 --------
 
