@@ -21,7 +21,7 @@ external repositories for the Dart toolchain:
 ```python
 git_repository(
     name = "io_bazel_rules_dart",
-    remote = "https://github.com/bazelbuild/rules_dart.git",
+    remote = "https://github.com/cbracken/rules_dart.git",
     tag = "2.6.0",
 )
 load("@io_bazel_rules_dart//dart:repositories.bzl", "dart_repositories")
