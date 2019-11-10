@@ -1,10 +1,10 @@
 Dart rules for Bazel
 ====================
 
-**WARNING** These rules had moved to a
-[repo](https://github.com/dart-lang/rules_dart) under the dart-lang
-organisation which was later deprecated and archived. They are maintained here
-on an infrequent basis.
+**WARNING:** These rules are maintained on an infrequent basis. They were
+authored as the foundation for what became the
+[dart-lang/rules\_dart](https://github.com/dart-lang/rules_dart) repo which was
+later deprecated and archived.
 
 Overview
 --------
