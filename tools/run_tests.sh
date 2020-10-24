@@ -20,3 +20,8 @@ if bazel test //examples/hello_lib:failing_test; then
   echo "ERROR: Expected failure did not fail."
   exit 1
 fi
+
+echo
+echo "============================================================"
+echo "All tests passed."
+echo "============================================================"
