@@ -1,0 +1,258 @@
+#!/usr/bin/env python3
+
+from enum import Enum
+from functools import total_ordering
+import json
+import urllib.request
+import re
+import sys
+
+class Channel(Enum):
+  DEV = "dev"
+  BETA = "beta"
+  STABLE = "stable"
+
+  @staticmethod
+  def parse(channel):
+    if channel == "dev":
+      return Channel.DEV
+    if channel == "beta":
+      return Channel.BETA
+    if channel == "stable":
+      return Channel.STABLE
+    raise
+
+  def __str__(self):
+    return self.value
+
+  def __lt__(self, other):
+    if self.value == other.value:
+      return False
+    if self.value == Channel.DEV.value:
+      return True
+    if other.value == Channel.DEV.value:
+      return False
+    if self.value == Channel.BETA.value:
+      return True
+    if other.value == Channel.BETA.value:
+      return False
+    return False
+
+
+class Platform(Enum):
+  LINUX_X64 = "linux-x64"
+  MACOS_X64 = "macos-x64"
+
+
+class DartService:
+  _API_URL = "https://www.googleapis.com/storage/v1/b/dart-archive/o"
+
+  def _request(self, query_params):
+    params = ["=".join([k, v]) for k, v in query_params.items()]
+    url = "?".join([DartService._API_URL, "&".join(params)])
+    json_url = urllib.request.urlopen(url)
+    return json.loads(json_url.read())
+
+  def list_releases(self, channel):
+    response = self._request({
+      "prefix": "channels/%s/release/" % channel.value,
+      "delimiter": "/"
+    })
+
+    # Only include releases that use semantic versioning.
+    #
+    # Older Dart SDKs prior to Dart 1.1 used a single version number. Given
+    # that the Bazel rules rely on features found in newer Dart SDKs, we filter
+    # them out. We also filter out any named versions like "latest".
+    paths = [path for path in response['prefixes'] if "." in path]
+    releases = [Release.from_path(path) for path in paths]
+    releases.sort()
+    return releases
+
+  def latest_release(self, channel):
+    return self.list_releases(channel)[-1]
+
+
+class Version:
+  @staticmethod
+  def parse(text):
+    p = re.compile(r'^' +
+      r'(\d+).(\d+).(\d+)' + # major.minor.patch
+      r'(-([0-9A-Za-z-]+(\.[0-9A-Za-z-]+)*))?' #+ # prerelease
+      r'(\+([0-9A-Za-z-]+(\.[0-9A-Za-z-]+)*))?$' # build
+    )
+    m = p.match(text)
+    major = m.group(1)
+    minor = m.group(2)
+    patch = m.group(3)
+    prerelease = m.group(5)
+    build = m.group(8)
+    return Version(major, minor, patch, prerelease, build)
+
+  def __init__(self, major, minor, patch, prerelease=None, build=None):
+    self.major = int(major)
+    self.minor = int(minor)
+    self.patch = int(patch)
+    self.prerelease = prerelease
+    self.build = build
+
+  def __lt__(self, other):
+    if self.major != other.major:
+      return self.major < other.major
+    if self.minor != other.minor:
+      return self.minor < other.minor
+    if self.patch != other.patch:
+      return self.patch < other.patch
+    if self.prerelease and not other.prerelease:
+      return True
+    if not self.prerelease and other.prerelease:
+      return False
+    if self.prerelease != other.prerelease:
+      return self.prerelease < other.prerelease
+    if not self.build and other.build:
+      return True
+    if self.build and not other.build:
+      return False
+    return self.build < other.build
+
+  def __str__(self):
+    text = "{self.major}.{self.minor}.{self.patch}".format(self=self)
+    if self.prerelease:
+      text += "-" + self.prerelease
+    if self.build:
+      text += "+" + self.build
+    return text
+
+
+@total_ordering
+class Release:
+  @staticmethod
+  def from_path(path):
+    p = re.compile(r"channels/([a-zA-Z]+)/release/([0-9a-zA-Z-+\.]+)/")
+    m = p.match(path)
+    if not m:
+      print("Unknown version: %s" % path)
+      raise
+    channel = m.group(1)
+    version = m.group(2)
+    return Release(Channel.parse(channel), Version.parse(version))
+
+  def __init__(self, channel, version):
+    self.channel = channel
+    self.version = version
+
+  def __lt__(self, other):
+    # Versions are sufficient for ordering. Generally, given version shouldn't
+    # appear on two channels, but if it happens, order using the channel.
+    if self.version != other.version:
+      return self.version < other.version
+    return self.channel < other.channel
+
+  def __repr__(self):
+    return "[{self.channel.value}: {self.version}]".format(self=self)
+
+  def _path(self):
+    return "channels/%s/release/%s" % (self.channel, self.version)
+
+  def sdk_url(self, platform):
+    base_uri = "https://storage.googleapis.com/dart-archive"
+    sdk_archive = "dartsdk-%s-release.zip" % platform.value
+    return "/".join([base_uri, self._path(), "sdk", sdk_archive])
+
+  def sdk_shasum_url(self, platform):
+    return self.sdk_url(platform) + ".sha256sum"
+
+  def sdk_shasum(self, platform):
+    url = self.sdk_shasum_url(platform)
+    with urllib.request.urlopen(url) as request:
+      response = request.read().decode('utf-8')
+    return response.split()[0]
+
+
+class RepositoryRules:
+  PATH = "dart/build_rules/repositories.bzl"
+  RE_CHANNEL = re.compile(r'\s*sdk_channel = "(.*)"')
+  RE_VERSION = re.compile(r'\s*sdk_version = "(.*)"')
+  RE_LINUX_X64_SHA = re.compile(r'\s*linux_x64_sha = "(.*)"')
+  RE_MACOS_X64_SHA = re.compile(r'\s*macos_x64_sha = "(.*)"')
+
+  def readlines(self):
+    with open(self.PATH, 'r') as repo_file:
+      return repo_file.readlines()
+    raise
+
+  def writelines(self, lines):
+    with open(self.PATH, 'w') as repo_file:
+      return repo_file.write("".join(lines))
+
+  def current_sdk(self):
+    for line in self.readlines():
+      m = self.RE_VERSION.match(line)
+      if m:
+        return m.group(1)
+    return None
+
+  def update_sdk(self, release):
+    lines = []
+    for line in self.readlines():
+      if self.RE_CHANNEL.match(line):
+        lines.append('  sdk_channel = "%s"\n' % release.channel)
+      elif self.RE_VERSION.match(line):
+        lines.append('  sdk_version = "%s"\n' % release.version)
+      elif self.RE_LINUX_X64_SHA.match(line):
+        lines.append('  linux_x64_sha = "%s"\n' % release.sdk_shasum(Platform.LINUX_X64))
+      elif self.RE_MACOS_X64_SHA.match(line):
+        lines.append('  macos_x64_sha = "%s"\n' % release.sdk_shasum(Platform.MACOS_X64))
+      else:
+        lines.append(line)
+    self.writelines(lines)
+
+
+def roll_sdk(args):
+  # Get the version and channel.
+  version = args[0]
+  channel = Channel.parse(args[1]) if len(args) >= 2 else Channel.STABLE
+  if version == "latest":
+    service = DartService()
+    release = service.latest_release(channel)
+  else:
+    release = Release(channel, Version.parse(version))
+
+  print("Rolling Dart SDK to release: %s" % release)
+  rules = RepositoryRules()
+  rules.update_sdk(release)
+  print("Done")
+
+
+def list_versions(args):
+  channel = Channel.parse(args[0]) if len(args) >= 1 else Channel.STABLE
+  service = DartService()
+  for release in service.list_releases(channel):
+    print(release)
+
+
+def main():
+  if len(sys.argv) < 2:
+    print("usage: python3 tools/roll_dart.py COMMAND ARGS");
+    print()
+    print("Commands:")
+    print("  list [CHANNEL]           List all versions on CHANNEL.");
+    print("  roll VERSION [CHANNEL]   Roll to VERSION on CHANNEL. 'latest' to roll to latest.");
+    print()
+    print("CHANNEL: dev,beta,stable. Default: stable")
+    print("VERSION: value from list command or 'latest' for latest")
+    sys.exit(1)
+
+  command = sys.argv[1]
+  if command == "roll":
+    roll_sdk(sys.argv[2:])
+  elif command == "list":
+    list_versions(sys.argv[2:])
+  else:
+    print("Error: unknown command %s" % command)
+    sys.exit(1)
+  sys.exit(0)
+
+
+if __name__ == "__main__":
+  main()
