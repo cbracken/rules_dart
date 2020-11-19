@@ -22,7 +22,7 @@ external repositories for the Dart toolchain:
 git_repository(
     name = "io_bazel_rules_dart",
     remote = "https://github.com/cbracken/rules_dart.git",
-    tag = "2.9.3",
+    tag = "2.10.0",
 )
 load("@io_bazel_rules_dart//dart:repositories.bzl", "dart_repositories")
 
