@@ -1,6 +1,8 @@
 Dart rules for Bazel
 ====================
 
+[![Build Status](https://travis-ci.org/cbracken/rules_dart.svg?branch=master)](https://travis-ci.org/cbracken/rules_dart)
+
 **WARNING:** These rules are maintained on an infrequent basis. They were
 authored as the foundation for what became the
 [dart-lang/rules\_dart](https://github.com/dart-lang/rules_dart) repo which was
