@@ -169,6 +169,29 @@ class Release:
     return response.split()[0]
 
 
+class Readme:
+  PATH = "README.md"
+  RE_VERSION = re.compile(r'\s*tag = "(.*)",')
+
+  def readlines(self):
+    with open(self.PATH, 'r') as readme:
+      return readme.readlines()
+    raise
+
+  def writelines(self, lines):
+    with open(self.PATH, 'w') as readme:
+      return readme.write("".join(lines))
+
+  def update_sdk(self, release):
+    lines = []
+    for line in self.readlines():
+      if self.RE_VERSION.match(line):
+        lines.append('    tag = "%s",\n' % release.version)
+      else:
+        lines.append(line)
+    self.writelines(lines)
+
+
 class RepositoryRules:
   PATH = "dart/build_rules/repositories.bzl"
   RE_CHANNEL = re.compile(r'\s*sdk_channel = "(.*)"')
@@ -221,6 +244,8 @@ def roll_sdk(args):
   print("Rolling Dart SDK to release: %s" % release)
   rules = RepositoryRules()
   rules.update_sdk(release)
+  readme = Readme()
+  readme.update_sdk(release)
   print("Done")
 
 
@@ -233,7 +258,7 @@ def list_versions(args):
 
 def main():
   if len(sys.argv) < 2:
-    print("usage: python3 tools/roll_dart.py COMMAND ARGS");
+    print("usage: roll_dart COMMAND ARGS");
     print()
     print("Commands:")
     print("  list [CHANNEL]           List all versions on CHANNEL.");
