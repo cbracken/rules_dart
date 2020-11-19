@@ -54,18 +54,26 @@ filegroup(
 )
 """
 
-
 def dart_repositories():
+  sdk_channel = "stable"
+  sdk_version = "2.9.3"
+  linux_x64_sha = "6719026f526f3171274dc9d8322c33fd9ec22e659e8dd833c587038211b83b04"
+  macos_x64_sha = "f29ff9955b024bcf2aa6ffed6f8f66dc37a95be594496c9a2d695e67ac34b7ac"
+
+  sdk_base_url = ("https://storage.googleapis.com/dart-archive/channels/" +
+      sdk_channel + "/release/" +
+      sdk_version + "/sdk/")
+
   http_archive(
       name = "dart_linux_x86_64",
-      url = "https://storage.googleapis.com/dart-archive/channels/stable/release/2.9.3/sdk/dartsdk-linux-x64-release.zip",
-      sha256 = "6719026f526f3171274dc9d8322c33fd9ec22e659e8dd833c587038211b83b04",
+      url = sdk_base_url + "dartsdk-linux-x64-release.zip",
+      sha256 = linux_x64_sha,
       build_file_content = _DART_SDK_BUILD_FILE,
   )
 
   http_archive(
       name = "dart_darwin_x86_64",
-      url = "https://storage.googleapis.com/dart-archive/channels/stable/release/2.9.3/sdk/dartsdk-macos-x64-release.zip",
-      sha256 = "f29ff9955b024bcf2aa6ffed6f8f66dc37a95be594496c9a2d695e67ac34b7ac",
+      url = sdk_base_url + "dartsdk-macos-x64-release.zip",
+      sha256 = macos_x64_sha,
       build_file_content = _DART_SDK_BUILD_FILE,
   )
