@@ -26,7 +26,7 @@ git_repository(
     remote = "https://github.com/cbracken/rules_dart.git",
     tag = "2.12.2",
 )
-load("@io_bazel_rules_dart//dart:repositories.bzl", "dart_repositories")
+load("@io_bazel_rules_dart//dart/build_rules:repositories.bzl", "dart_repositories")
 
 dart_repositories()
 ```
