@@ -21,6 +21,8 @@ To use the Dart rules, add the following to your `WORKSPACE` file to add the
 external repositories for the Dart toolchain:
 
 ```python
+load("@bazel_tools//tools/build_defs/repo:git.bzl", "git_repository")
+
 git_repository(
     name = "io_bazel_rules_dart",
     remote = "https://github.com/cbracken/rules_dart.git",
@@ -34,12 +36,20 @@ dart_repositories()
 Core rules
 ----------
 
+```
+load("@io_bazel_rules_dart//dart/build_rules:core.bzl", RULE_NAME)
+```
+
 `dart_library`: Declares a collection of Dart sources and data and their
 dependencies.
 
 
 VM rules
 --------
+
+```
+load("@io_bazel_rules_dart//dart/build_rules:vm.bzl", RULE_NAME)
+```
 
 `dart_vm_binary`: Builds an executable bundle that runs a script or snapshot on
 the Dart VM.
@@ -52,6 +62,10 @@ files are *not* guaranteed to be compatible across VM releases.
 
 Web rules
 ---------
+
+```
+load("@io_bazel_rules_dart//dart/build_rules:web.bzl", RULE_NAME)
+```
 
 `dart_web_application`: Compiles the specified script to JavaScript.
 
