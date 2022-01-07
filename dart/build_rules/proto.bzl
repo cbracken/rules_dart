@@ -15,7 +15,7 @@
 """Dart rules for protocol buffers"""
 
 load("//dart/build_rules:internal.bzl", "make_dart_context", "collect_dart_context")
-
+load("@rules_proto//proto:defs.bzl", "ProtoInfo")
 
 def _generate_protoc_config(dart_ctx):
   dart_ctxs = collect_dart_context(dart_ctx,
@@ -36,11 +36,11 @@ def protoc_gen_action(ctx,
   cmd_inputs, _, cmd_input_manifests = ctx.resolve_command(tools=[ctx.attr._protoc_gen_dart])
 
   # Protoc arguments.
-  inputs = cmd_inputs + list(transitive_sources)
+  inputs = cmd_inputs + transitive_sources.to_list()
   plugin = "protoc-gen-dart=" + ctx.executable._protoc_gen_dart.path
   bazel_options = _generate_protoc_config(dart_ctx)
   genfiles_path = ctx.configuration.genfiles_dir.path
-  ctx.action(
+  ctx.actions.run(
       inputs=inputs,
       outputs=outputs,
       executable=ctx.executable._protocol_compiler,
@@ -56,11 +56,11 @@ def protoc_gen_action(ctx,
 
 def _dart_proto_aspect_impl(target, ctx):
   # Compute the generated outputs.
-  direct_sources = target.proto.direct_sources
+  direct_sources = target[ProtoInfo].direct_sources
   generated_outputs = []
   for s in direct_sources:
     gen_path = "lib/" + s.basename[:-len(".proto")] + ".pb.dart"
-    out_file = ctx.new_file(gen_path)
+    out_file = ctx.actions.declare_file(gen_path)
     generated_outputs += [out_file]
 
   # Create the package.
@@ -75,7 +75,7 @@ def _dart_proto_aspect_impl(target, ctx):
   protoc_gen_action(ctx,
                     dart_ctx,
                     direct_sources,
-                    target.proto.transitive_sources,
+                    target[ProtoInfo].transitive_sources,
                     generated_outputs)
 
   return struct(
@@ -118,7 +118,7 @@ def _dart_proto_library_impl(ctx):
 
 _dart_proto_library_attrs = {
     "deps": attr.label_list(
-        providers=["proto"],
+        providers=[ProtoInfo],
         aspects=[dart_proto_aspect],
     ),
 }

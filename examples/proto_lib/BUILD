@@ -1,4 +1,4 @@
-load("//dart/build_rules:proto.bzl", "dart_proto_library")
+load("@rules_proto//proto:defs.bzl", "proto_library")
 
 package(default_visibility = ["//visibility:public"])
 

@@ -1,3 +1,4 @@
+load("@rules_proto//proto:defs.bzl", "proto_library")
 load("//dart/build_rules:proto.bzl", "dart_proto_library")
 load("//dart/build_rules:vm.bzl", "dart_vm_binary")
 

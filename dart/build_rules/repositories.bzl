@@ -92,7 +92,8 @@ def dart_repositories():
 def proto_repositories():
   git_repository(
       name = "com_google_protobuf",
-      commit = "v3.10.1",
+      # tag = "v3.19.1",
+      commit = "7c40b2df1fdf6f414c1c18c789715a9c948a0725", 
+      shallow_since = "1635455273 -0700",
       remote = "https://github.com/protocolbuffers/protobuf",
-      shallow_since = "1558721209 -0700",
   )
