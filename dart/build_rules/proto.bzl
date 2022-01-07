@@ -87,17 +87,18 @@ _dart_proto_aspect_attrs = {
     "_protocol_compiler": attr.label(
         executable=True,
         cfg="host",
-        default=Label("//third_party:protoc"),
+        default=Label("@com_google_protobuf//:protoc"),
     ),
     "_protoc_gen_dart": attr.label(
+      # TODO: FIX
         default=Label(
-            "//third_party/dart/protoc_plugin:protoc_gen_dart"),
+            "@dart_protobuf_protoc_plugin//:protoc_gen_dart"),
         executable=True,
         cfg="host",
     ),
     "_proto_libs_dart": attr.label_list(default=[
-        Label("//third_party/dart/fixnum:fixnum"),
-        Label("//third_party/dart/protobuf:protobuf"),
+        Label("@dart_fixnum//:fixnum_lib"),
+        Label("@dart_protobuf_protobuf//:protobuf_lib"),
     ])
 }
 
