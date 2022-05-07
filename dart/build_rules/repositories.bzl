@@ -56,9 +56,9 @@ filegroup(
 
 def dart_repositories():
   sdk_channel = "stable"
-  sdk_version = "2.15.1"
-  linux_x64_sha = "0f45dcaa53b4090b69b277b885ea9a4cb3a41589c9119113e1b978ad55ce335f"
-  macos_x64_sha = "b3a6e4c21da6e4a751aff5b1597c08b4ef58683a69fc7237c639d2d941e637e2"
+  sdk_version = "2.16.0"
+  linux_x64_sha = "9fe86bde232de52d2211e47f5fdcc143ce936e309a8da1b447213e223d7f68d3"
+  macos_x64_sha = "7e651c13727a21decc1afd9556c748b28ab198eab8f97e816003757643e2b67f"
 
   sdk_base_url = ("https://storage.googleapis.com/dart-archive/channels/" +
       sdk_channel + "/release/" +
