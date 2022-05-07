@@ -26,7 +26,7 @@ load("@bazel_tools//tools/build_defs/repo:git.bzl", "git_repository")
 git_repository(
     name = "io_bazel_rules_dart",
     remote = "https://github.com/cbracken/rules_dart.git",
-    tag = "2.14.3",
+    tag = "2.14.4",
 )
 load("@io_bazel_rules_dart//dart/build_rules:repositories.bzl", "dart_repositories")
 
