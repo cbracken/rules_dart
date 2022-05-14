@@ -41,6 +41,7 @@ class Channel(Enum):
 
 class Platform(Enum):
   LINUX_X64 = "linux-x64"
+  MACOS_ARM64 = "macos-arm64"
   MACOS_X64 = "macos-x64"
 
 
@@ -197,6 +198,7 @@ class RepositoryRules:
   RE_CHANNEL = re.compile(r'\s*sdk_channel = "(.*)"')
   RE_VERSION = re.compile(r'\s*sdk_version = "(.*)"')
   RE_LINUX_X64_SHA = re.compile(r'\s*linux_x64_sha = "(.*)"')
+  RE_MACOS_ARM64_SHA = re.compile(r'\s*macos_arm64_sha = "(.*)"')
   RE_MACOS_X64_SHA = re.compile(r'\s*macos_x64_sha = "(.*)"')
 
   def readlines(self):
@@ -224,6 +226,8 @@ class RepositoryRules:
         lines.append('  sdk_version = "%s"\n' % release.version)
       elif self.RE_LINUX_X64_SHA.match(line):
         lines.append('  linux_x64_sha = "%s"\n' % release.sdk_shasum(Platform.LINUX_X64))
+      elif self.RE_MACOS_ARM64_SHA.match(line):
+        lines.append('  macos_arm64_sha = "%s"\n' % release.sdk_shasum(Platform.MACOS_ARM64))
       elif self.RE_MACOS_X64_SHA.match(line):
         lines.append('  macos_x64_sha = "%s"\n' % release.sdk_shasum(Platform.MACOS_X64))
       else:

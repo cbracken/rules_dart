@@ -3,6 +3,7 @@ package(default_visibility = ["//visibility:public"])
 filegroup(
     name = "dart_vm",
     srcs = select({
+        "//dart:darwin_arm64": ["@dart_darwin_arm64//:dart_vm"],
         "//dart:darwin": ["@dart_darwin_x86_64//:dart_vm"],
         "//dart:k8": ["@dart_linux_x86_64//:dart_vm"],
     }),
@@ -11,6 +12,7 @@ filegroup(
 filegroup(
     name = "dart2js",
     srcs = select({
+        "//dart:darwin_arm64": ["@dart_darwin_arm64//:dart2js"],
         "//dart:darwin": ["@dart_darwin_x86_64//:dart2js"],
         "//dart:k8": ["@dart_linux_x86_64//:dart2js"],
     }),
@@ -19,6 +21,7 @@ filegroup(
 filegroup(
     name = "dart2js_support",
     srcs = select({
+        "//dart:darwin_arm64": ["@dart_darwin_arm64//:dart2js_support"],
         "//dart:darwin": ["@dart_darwin_x86_64//:dart2js_support"],
         "//dart:k8": ["@dart_linux_x86_64//:dart2js_support"],
     }),

@@ -58,6 +58,7 @@ def dart_repositories():
   sdk_channel = "stable"
   sdk_version = "2.17.0"
   linux_x64_sha = "57b8fd964e47c81d467aeb95b099a670ab7e8f54a1cd74d45bcd1fdc77913d86"
+  macos_arm64_sha = "5977f449d4841cc68945f54580acdbf526382c18dfd713b93a48bf77328c10c6"
   macos_x64_sha = "3f06b15101c852145608ecb7215746b51c8ff4bb6c72aa1424f3997debcdef1b"
 
   sdk_base_url = ("https://storage.googleapis.com/dart-archive/channels/" +
@@ -68,6 +69,13 @@ def dart_repositories():
       name = "dart_linux_x86_64",
       url = sdk_base_url + "dartsdk-linux-x64-release.zip",
       sha256 = linux_x64_sha,
+      build_file_content = _DART_SDK_BUILD_FILE,
+  )
+
+  http_archive(
+      name = "dart_darwin_arm64",
+      url = sdk_base_url + "dartsdk-macos-arm64-release.zip",
+      sha256 = macos_arm64_sha,
       build_file_content = _DART_SDK_BUILD_FILE,
   )
 
