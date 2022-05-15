@@ -1,7 +1,8 @@
 import 'package:examples.hello_lib/hello.dart';
+import 'package:examples.goodbye_lib/goodbye.dart';
 
 main(List<String> args) {
-  var greeting = sayHello("world");
-  print(greeting);
+  print(sayHello("world"));
   print("${args.length} arguments: ${args}");
+  print(sayGoodbye("world"));
 }

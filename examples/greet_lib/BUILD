@@ -1,9 +1,9 @@
 load("//dart/build_rules:core.bzl", "dart_library")
+load("//dart/build_rules:vm.bzl", "dart_vm_test")
 
 package(default_visibility = ["//visibility:public"])
 
 dart_library(
-    name = "goodbye_lib",
-    srcs = ["lib/goodbye.dart"],
-    deps = ["//examples/greet_lib"],
+    name = "greet_lib",
+    srcs = ["lib/greet.dart"],
 )
