@@ -7,6 +7,7 @@ dart_vm_binary(
     srcs = ["bin/hello.dart"],
     script_file = "bin/hello.dart",
     deps = [
+        "//examples/goodbye_lib",
         "//examples/hello_lib",
     ],
 )
@@ -18,6 +19,7 @@ dart_vm_binary(
     script_args = ["foo", "bar"],
     vm_flags = ["--enable-asserts"],
     deps = [
+        "//examples/goodbye_lib",
         "//examples/hello_lib",
     ],
 )
@@ -39,6 +41,7 @@ dart_vm_binary(
     script_args = ["foo", "bar"],
     vm_flags = ["--enable-asserts"],
     deps = [
+        "//examples/goodbye_lib",
         "//examples/hello_lib",
     ],
     snapshot = True,

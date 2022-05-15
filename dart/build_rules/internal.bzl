@@ -145,8 +145,9 @@ def _merge_dart_context(dart_ctx1, dart_ctx2):
          "  %s declares: %s\n" % (dart_ctx2.label, dart_ctx2.lib_root) +
          "Targets in the same package must declare the same lib_root")
 
-  transitive_deps = dart_ctx1.transitive_deps
+  transitive_deps = {}
   transitive_deps.update(dart_ctx1.transitive_deps)
+  transitive_deps.update(dart_ctx2.transitive_deps)
   return _new_dart_context(
       label=dart_ctx1.label,
       package=dart_ctx1.package,
