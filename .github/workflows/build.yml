@@ -5,7 +5,7 @@ on:
   pull_request:
 
 jobs:
-  build:
+  run-tests:
     strategy:
       matrix:
         os: [ubuntu-latest, macos-latest]
