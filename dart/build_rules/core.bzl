@@ -14,33 +14,31 @@
 
 """Dart rules shared across deployment platforms."""
 
-
 load(":internal.bzl", "assert_third_party_licenses", "make_dart_context")
 
-
 def _dart_library_impl(ctx):
-  """Implements the dart_library() rule."""
-  assert_third_party_licenses(ctx)
+    """Implements the dart_library() rule."""
+    assert_third_party_licenses(ctx)
 
-  dart_ctx = make_dart_context(ctx.label,
-                               srcs=ctx.files.srcs,
-                               data=ctx.files.data,
-                               deps=ctx.attr.deps)
+    dart_ctx = make_dart_context(
+        ctx.label,
+        srcs = ctx.files.srcs,
+        data = ctx.files.data,
+        deps = ctx.attr.deps,
+    )
 
-  return struct(
-      dart=dart_ctx,
-  )
-
+    return struct(
+        dart = dart_ctx,
+    )
 
 dart_library_attrs = {
-    "srcs": attr.label_list(allow_files=True, mandatory=True),
-    "data": attr.label_list(allow_files=True),
-    "deps": attr.label_list(providers=["dart"]),
-    "license_files": attr.label_list(allow_files=True)
+    "srcs": attr.label_list(allow_files = True, mandatory = True),
+    "data": attr.label_list(allow_files = True),
+    "deps": attr.label_list(providers = ["dart"]),
+    "license_files": attr.label_list(allow_files = True),
 }
 
-
 dart_library = rule(
-    implementation=_dart_library_impl,
-    attrs=dart_library_attrs,
+    implementation = _dart_library_impl,
+    attrs = dart_library_attrs,
 )
