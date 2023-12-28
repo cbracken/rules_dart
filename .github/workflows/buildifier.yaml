@@ -1,0 +1,18 @@
+name: Buildifier
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+  workflow_dispatch:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone repository
+        uses: actions/checkout@v4
+
+      - name: Run buildifier
+        run: bazelisk run //.github/workflows:buildifier.check

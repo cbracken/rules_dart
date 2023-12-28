@@ -1,0 +1,35 @@
+name: Build
+
+on:
+  pull_request:
+  push:
+    branches: [master]
+  workflow_dispatch:
+
+jobs:
+  run-tests:
+    timeout-minutes: 15
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - name: Clone repository
+        uses: actions/checkout@v4
+
+      - name: Install Bazel
+        run: tools/install_deps.sh
+
+      - name: Run tests
+        run: tools/run_tests.sh
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+
+      - name: Install buildifier
+        run: go install github.com/bazelbuild/buildtools/buildifier@latest
+
+      - name: Verify Starlark code formatting
+        run: buildifier -r path.
