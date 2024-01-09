@@ -12,26 +12,26 @@ dart_library(
 
 genrule(
     name = "gen_lib",
-    cmd = """echo 'String generatedFunc() => "generated";' > $@""",
     outs = ["web/generated.dart"],
+    cmd = """echo 'String generatedFunc() => "generated";' > $@""",
 )
 
 dart_web_application(
     name = "js_debug",
     srcs = [":gen_lib"] + glob(["web/**"]),
-    script_file = "web/main.dart",
     deferred_lib_count = 1,
+    dump_info = True,
     enable_asserts = True,
     minify = False,
-    dump_info = True,
+    script_file = "web/main.dart",
     deps = [":web_app"],
 )
 
 dart_web_application(
     name = "js_release",
     srcs = glob(["web/**"]),
-    script_file = "web/main.dart",
     deferred_lib_count = 1,
+    script_file = "web/main.dart",
     deps = [
         ":web_app",
         "//examples/hello_lib",
