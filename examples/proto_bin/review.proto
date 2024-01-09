@@ -1,0 +1,13 @@
+syntax = "proto2";
+
+import 'examples/proto_lib/person.proto';
+import 'examples/proto_lib/device.proto';
+
+package ex;
+
+message Review {
+  required ex.Person person = 1;
+  required ex.Device device = 2;
+  required int64 date = 3;
+  required string text = 4;
+}

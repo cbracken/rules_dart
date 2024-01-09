@@ -14,6 +14,8 @@
 
 """Repositories for Dart."""
 
+load("@bazel_tools//tools/build_defs/repo:git.bzl", "git_repository", "new_git_repository")
+
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 
 
@@ -84,4 +86,87 @@ def dart_repositories():
       url = sdk_base_url + "dartsdk-macos-x64-release.zip",
       sha256 = macos_x64_sha,
       build_file_content = _DART_SDK_BUILD_FILE,
+  )
+
+
+_FIXNUM_BUILD_FILE = """
+load("@//dart/build_rules:core.bzl", "dart_library")
+load("@//dart/build_rules:vm.bzl", "dart_vm_test")
+
+package(default_visibility = ["//visibility:public"])
+
+dart_library(
+    name = "fixnum_lib",
+    srcs = glob(["lib/**/*.dart"]),
+)
+"""
+
+_PROTOBUF_BUILD_FILE = """
+load("@//dart/build_rules:core.bzl", "dart_library")
+load("@//dart/build_rules:vm.bzl", "dart_vm_binary")
+
+package(default_visibility = ["//visibility:public"])
+
+dart_library(
+    name = "protobuf_lib",
+    srcs = glob(["lib/**/*.dart"]),
+)
+"""
+
+_PROTOC_PLUGIN_BUILD_FILE = """
+load("@//dart/build_rules:core.bzl", "dart_library")
+load("@//dart/build_rules:vm.bzl", "dart_vm_binary")
+
+package(default_visibility = ["//visibility:public"])
+
+dart_library(
+    name = "protoc_plugin_lib",
+    srcs = glob(["lib/**/*.dart"]),
+)
+
+dart_vm_binary(
+    name = "protoc_gen_dart",
+    srcs = ["bin/protoc_plugin.dart"],
+    script_file = "bin/protoc_plugin.dart",
+    deps = [":protoc_plugin_lib"],
+)
+"""
+
+def proto_repositories():
+
+  new_git_repository(
+      name = "dart_fixnum",
+      # tag = "1.0.0",
+      commit = "762b74f61696d414d0090c5dfc430572f5b4be0f", 
+      shallow_since = "1612551835 -0800",
+      remote = "https://github.com/dart-lang/fixnum",
+      build_file_content = _FIXNUM_BUILD_FILE
+  )
+
+  new_git_repository(
+      name = "dart_protobuf_protobuf",
+      # tag = "protobuf-v2.0.1",
+      commit = "23136dc01cf3daccf66ebb7f5a7578ec7c0dc7e6", 
+      shallow_since = "1638456183 +0100",
+      remote = "https://github.com/google/protobuf.dart",
+      build_file_content = _PROTOBUF_BUILD_FILE,
+      strip_prefix = "protobuf"
+  )
+
+  new_git_repository(
+      name = "dart_protobuf_protoc_plugin",
+      # tag = "protobuf-v2.0.1",
+      commit = "23136dc01cf3daccf66ebb7f5a7578ec7c0dc7e6", 
+      shallow_since = "1638456183 +0100",
+      remote = "https://github.com/google/protobuf.dart",
+      build_file_content = _PROTOC_PLUGIN_BUILD_FILE,
+      strip_prefix = "protoc_plugin"
+  )
+
+  git_repository(
+      name = "com_google_protobuf",
+      # tag = "v3.19.1",
+      commit = "7c40b2df1fdf6f414c1c18c789715a9c948a0725", 
+      shallow_since = "1635455273 -0700",
+      remote = "https://github.com/protocolbuffers/protobuf",
   )

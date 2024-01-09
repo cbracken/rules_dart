@@ -17,6 +17,12 @@ with [Bazel](https://bazel.build).
 Setup
 -----
 
+Make sure Bazel is installed on your system. See the [Bazel
+documentation](https://docs.bazel.build/versions/master/install.html) for
+platform-specific instructions. We recommend using [Bazelisk](
+https://bazel.build/install/bazelisk.html) to ensure you are using a supported
+version.
+
 To use the Dart rules, add the following to your `WORKSPACE` file to add the
 external repositories for the Dart toolchain:
 
@@ -70,3 +76,9 @@ load("@io_bazel_rules_dart//dart/build_rules:web.bzl", RULE_NAME)
 `dart_web_application`: Compiles the specified script to JavaScript.
 
 `dart_web_test`: Builds a test that will be executed in the browser.
+
+
+Protocol Buffer rules
+---------------------
+
+`dart_proto_library`: Generates Dart implementations of `.proto` dependencies.
