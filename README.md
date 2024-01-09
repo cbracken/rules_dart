@@ -17,6 +17,12 @@ with [Bazel](https://bazel.build).
 Setup
 -----
 
+Make sure Bazel is installed on your system. See the [Bazel
+documentation](https://docs.bazel.build/versions/master/install.html) for
+platform-specific instructions. We recommend using [Bazelisk](
+https://bazel.build/install/bazelisk.html) to ensure you are using a supported
+version.
+
 To use the Dart rules, add the following to your `WORKSPACE` file to add the
 external repositories for the Dart toolchain:
 
